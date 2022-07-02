@@ -1,7 +1,7 @@
+import { Main } from '@components'
+
 const Home = () => (
-  <div>
-    sdsdsd
-  </div>
+  <Main />
 )
 
 export default Home

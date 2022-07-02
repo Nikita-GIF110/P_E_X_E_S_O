@@ -1,0 +1,23 @@
+@import '@scss/theme';
+
+.toolbar {
+    @include d-flex($justifyContent: space-between);
+
+    background-color: $dark-white;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 24px;
+
+    &:not(:last-child) {
+        margin-bottom: 10px;
+    }
+}
+
+.value {
+    display: inline-block;
+    background-color: $secondary;
+    color: $dark-white;
+    padding: 4px;
+    border-radius: 4px;
+
+}

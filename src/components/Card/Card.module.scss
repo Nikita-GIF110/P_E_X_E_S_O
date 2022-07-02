@@ -1,0 +1,48 @@
+@import "@scss/theme";
+$card-transition: transform 0.3s linear;
+
+.card {
+    position: relative;
+    transform-style: preserve-3d;
+
+    border-radius: 8px;
+    padding: 10px;
+    color: $dark-white;
+    cursor: pointer;
+}
+
+.side {
+    @include d-flex;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    backface-visibility: hidden;
+    background-color: $secondary;
+    font-size: 48px;
+}
+
+.front {
+    transform: rotateY(0);
+    transition: $card-transition;
+}
+
+.back {
+    transform: rotateY(180deg);
+    transition: $card-transition;
+    backface-visibility: hidden;
+}
+
+.opened {
+    .front {
+        transform: rotateY(-180deg);
+        transition: $card-transition;
+    }
+
+    .back {
+        transform: rotateY(0deg);
+        transition: $card-transition;
+    }
+}

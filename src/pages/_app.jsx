@@ -1,3 +1,14 @@
-const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />
+import PropTypes from 'prop-types'
+import '@scss/globals.scss'
 
-export default MyApp
+const App = ({ Component, pageProps }) => <Component {...pageProps} />
+
+App.propTypes = {
+  Component: PropTypes.elementType.isRequired,
+  pageProps: PropTypes.object,
+}
+App.defaultProps = {
+  pageProps: {},
+}
+
+export default App
