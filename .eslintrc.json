@@ -1,3 +1,83 @@
 {
-  "extends": "next/core-web-vitals"
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "react/prop-types": 1,
+        "semi": [
+            "warn",
+            "never"
+        ],
+        "no-const-assign": "error",
+        "no-console": "warn",
+        "no-var": "error",
+        "import/no-unresolved": "off",
+        "react/react-in-jsx-scope": "off",
+        "import/prefer-default-export": "off",
+        "react/jsx-props-no-spreading": "off",
+        "jsx-a11y/anchor-is-valid": "off",
+        "react/forbid-prop-types": "off",
+        "no-undef": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/no-noninteractive-element-interactions": "off",
+        "react/function-component-definition": [
+            2,
+            {
+                "namedComponents": "arrow-function"
+            }
+        ],
+        "max-lines": [
+            "error",
+            {
+                "max": 250,
+                "skipComments": true
+            }
+        ],
+        "no-param-reassign": [
+            "warn",
+            {
+                "props": false
+            }
+        ],
+        "import/extensions": [
+            "warn",
+            "never",
+            {
+                "ignorePackages": false,
+                "pattern": {
+                    "js": "never",
+                    "jsx": "never",
+                    "json": "never",
+                    "ts": "never",
+                    "tsx": "never",
+                    "scss": "always"
+                }
+            }
+        ],
+        "camelcase": 0,
+        "no-use-before-define": [
+            "error",
+            {
+                "functions": false,
+                "variables": false
+            }
+        ],
+        "no-return-await": 0,
+        "no-unused-vars": "warn"
+    }
 }
