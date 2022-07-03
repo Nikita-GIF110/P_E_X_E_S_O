@@ -1,20 +1,33 @@
 import PropTypes from 'prop-types'
 import styles from './Card.module.scss'
 
-export const Card = ({ card, selectCard }) => {
+export const Card = ({ card, index, selectCard }) => {
   const {
-    label, value, open, done,
+    label, value, done, status,
   } = card
 
   const handlerChange = () => {
-    selectCard(card)
+    selectCard(index)
   }
-  const openClass = open ? styles.opened : ''
-  const doneClass = done ? styles.done : ''
-  const dataOpened = open && true
+  let dataOpened = false
+
+  const getClasses = (cardStatus) => {
+    if (cardStatus === 'active') {
+      dataOpened = true
+      return styles.opened
+    }
+    if (cardStatus === 'wrong') {
+      return styles.wrong
+    }
+    if (cardStatus === 'correct') {
+      return styles.done
+    }
+    return ''
+  }
+
   return (
     <div
-      className={`${styles.card} ${openClass} ${doneClass}`}
+      className={`${styles.card} ${getClasses(status)}`}
       data-value={value}
       data-open={dataOpened}
       role="button"
@@ -43,8 +56,10 @@ export const Card = ({ card, selectCard }) => {
 Card.propTypes = {
   card: PropTypes.object,
   selectCard: PropTypes.func,
+  index: PropTypes.number,
 }
 Card.defaultProps = {
   card: {},
   selectCard: () => { },
+  index: null,
 }

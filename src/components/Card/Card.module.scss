@@ -11,6 +11,7 @@ $secondary-bg-default: rgba(3, 26, 85, 0.9);
     color: $dark-white;
     cursor: pointer;
     overflow: hidden;
+    transition: $card-transition;
 }
 
 .side {
@@ -37,8 +38,13 @@ $secondary-bg-default: rgba(3, 26, 85, 0.9);
     backface-visibility: hidden;
 }
 
-.card:hover .side {
-    background-color: $secondary;
+.card:hover {
+    transform: scale(1.03);
+    transition: $card-transition;
+
+    .side {
+        background-color: $secondary;
+    }
 }
 
 .card.opened {
@@ -58,5 +64,10 @@ $secondary-bg-default: rgba(3, 26, 85, 0.9);
     cursor: default;
     .side {
         background-color: transparent;
+    }
+}
+.card.wrong {
+    .side {
+        background-color: $button-color;
     }
 }

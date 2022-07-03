@@ -22,25 +22,37 @@ export const Main = () => {
   const seconds = getPadTime(timeLeft - minutes * 60)
 
   const [items, setItems] = useState(game3x2)
-  const openCards = items.filter((item) => item.open)
+  const [prev, setPrev] = useState(-1)
 
-  const handelSelectCard = (card) => {
-    const { id } = card
-    const itemIndex = items.findIndex((item) => item.id === id)
-    setIsCounting(true)
+  const check = (current) => {
+    if (items[current].value === items[prev].value) {
+      items[current].status = 'correct'
+      items[prev].status = 'correct'
+      setItems([...items])
+      setPrev(-1)
+    } else {
+      items[current].status = 'wrong'
+      items[prev].status = 'wrong'
+      setItems([...items])
+      setTimeout(() => {
+        items[current].status = ''
+        items[prev].status = ''
+        setItems([...items])
+        setPrev(-1)
+      }, 1000)
+    }
+  }
 
-    if (openCards.length <= 1) {
-      const updateItem = {
-        ...card,
-        open: true,
+  const handelSelectCard = (index) => {
+    if (prev === -1) {
+      items[index] = {
+        ...items[index],
+        status: 'active',
       }
-
-      setValues((prevValues) => ({ ...prevValues, counter: counter + 1 }))
-      setItems((prevItems) => ([
-        ...prevItems.slice(0, itemIndex),
-        updateItem,
-        ...prevItems.slice(itemIndex + 1),
-      ]))
+      setItems([...items])
+      setPrev(index)
+    } else {
+      check(index)
     }
   }
 
@@ -71,11 +83,12 @@ export const Main = () => {
               gridTemplateRows: `repeat(${rowsCount}, ${cardHeight}px)`,
             }}
           >
-            {items.map((card) => (
+            {items.map((card, index) => (
               <Card
                 key={card.id}
                 selectCard={handelSelectCard}
                 card={card}
+                index={index}
               />
             ))}
           </div>
