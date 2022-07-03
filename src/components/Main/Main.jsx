@@ -8,39 +8,52 @@ import styles from './Main.module.scss'
 export const Main = () => {
   const columnCount = Math.ceil(game3x2.length / 2)
   const rowsCount = Math.ceil(game3x2.length / columnCount)
+
   const [cardHeight, setCardHeight] = useState(0)
-  const [view, setView] = useState(0)
-  const [isCounting, setisCounting] = useState(false)
+  const [values, setValues] = useState({
+    counter: 0,
+    score: 0,
+  })
+  const { counter, score } = values
+  const [isCounting, setIsCounting] = useState(false)
 
   const [timeLeft, setTimeLeft] = useState(2 * 60)
   const minutes = getPadTime(Math.floor(timeLeft / 60))
   const seconds = getPadTime(timeLeft - minutes * 60)
 
+  const [items, setItems] = useState(game3x2)
+  const openCards = items.filter((item) => item.open)
+
+  const handelSelectCard = (card) => {
+    const { id } = card
+    const itemIndex = items.findIndex((item) => item.id === id)
+    setIsCounting(true)
+
+    if (openCards.length <= 1) {
+      const updateItem = {
+        ...card,
+        open: true,
+      }
+
+      setValues((prevValues) => ({ ...prevValues, counter: counter + 1 }))
+      setItems((prevItems) => ([
+        ...prevItems.slice(0, itemIndex),
+        updateItem,
+        ...prevItems.slice(itemIndex + 1),
+      ]))
+    }
+  }
+
   useEffect(() => {
     const card = document.querySelector('[data-value]')
     setCardHeight(card.offsetWidth)
 
-    const area = document.getElementById('area')
-    const handelViewCount = (event) => {
-      const { target } = event
-      const parent = target.parentNode
-
-      if (parent.closest('[data-value]') && parent.getAttribute('data-open') === 'false') {
-        setisCounting(true)
-        setView((prevValue) => prevValue + 1)
-      }
-    }
     const interval = setInterval(() => {
       // eslint-disable-next-line no-unused-expressions
-      isCounting
-                && setTimeLeft((time) => (time >= 1 ? time - 1 : 0))
+      isCounting && setTimeLeft((time) => (time >= 1 ? time - 1 : 0))
     }, 1000)
 
-    area.addEventListener('click', handelViewCount)
-    return () => {
-      area.removeEventListener('click', handelViewCount)
-      clearInterval(interval)
-    }
+    return () => clearInterval(interval)
   }, [columnCount, isCounting])
 
   return (
@@ -58,10 +71,11 @@ export const Main = () => {
               gridTemplateRows: `repeat(${rowsCount}, ${cardHeight}px)`,
             }}
           >
-            {game3x2.map((card) => (
+            {items.map((card) => (
               <Card
-                key={card.value}
-                {...card}
+                key={card.id}
+                selectCard={handelSelectCard}
+                card={card}
               />
             ))}
           </div>
@@ -72,11 +86,11 @@ export const Main = () => {
             />
             <Toolbar
               title="View"
-              value={view}
+              value={counter}
             />
             <Toolbar
-              title="View"
-              value="0"
+              title="Score"
+              value={score}
             />
           </div>
         </div>

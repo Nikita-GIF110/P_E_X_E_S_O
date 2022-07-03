@@ -1,5 +1,6 @@
 @import "@scss/theme";
-$card-transition: transform 0.3s linear;
+$card-transition: transform 0.3s linear, background-color 0.3s ease-in-out;
+$secondary-bg-default: rgba(3, 26, 85, 0.9);
 
 .card {
     position: relative;
@@ -9,6 +10,7 @@ $card-transition: transform 0.3s linear;
     padding: 10px;
     color: $dark-white;
     cursor: pointer;
+    overflow: hidden;
 }
 
 .side {
@@ -20,7 +22,7 @@ $card-transition: transform 0.3s linear;
     right: 0;
     bottom: 0;
     backface-visibility: hidden;
-    background-color: $secondary;
+    background-color: $secondary-bg-default;
     font-size: 48px;
 }
 
@@ -35,7 +37,11 @@ $card-transition: transform 0.3s linear;
     backface-visibility: hidden;
 }
 
-.opened {
+.card:hover .side {
+    background-color: $secondary;
+}
+
+.card.opened {
     .front {
         transform: rotateY(-180deg);
         transition: $card-transition;
@@ -44,5 +50,13 @@ $card-transition: transform 0.3s linear;
     .back {
         transform: rotateY(0deg);
         transition: $card-transition;
+    }
+}
+
+.card.done {
+    border: 2px dashed $secondary;
+    cursor: default;
+    .side {
+        background-color: transparent;
     }
 }
