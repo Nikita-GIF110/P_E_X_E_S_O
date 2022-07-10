@@ -20,16 +20,28 @@
     column-gap: 10px;
 }
 
-.score {
-    display: grid;
-    grid-template-rows: repeat(3, 1fr);
-    row-gap: 10px;
-}
-
 .area {
     display: grid;
     gap: 10px;
     background-color: $dark-white;
     border-radius: 10px;
     padding: 16px;
+}
+
+.reload {
+    @include d-flex($justifyContent: space-between);
+
+    background-color: $primary;
+    padding: 8px 24px;
+    border-radius: 24px;
+    color: $dark-white;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 18px;
+
+    @include button-hover;
+}
+
+.icon {
+    margin-left: 12px;
 }

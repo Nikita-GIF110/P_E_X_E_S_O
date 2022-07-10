@@ -1,5 +1,16 @@
+@import "variables.scss";
+
 @mixin d-flex($display: flex, $alignItems: center, $justifyContent: center) {
     display: $display;
     align-items: $alignItems;
     justify-content: $justifyContent;
+}
+
+@mixin button-hover($hoverBg: $button-color, $hoverTextColor: $white) {
+    transition: background-color 0.3s ease-in-out;
+
+    &:hover {
+        background-color: $hoverBg;
+        color: hoverTextColor;
+    }
 }

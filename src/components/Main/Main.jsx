@@ -1,22 +1,23 @@
 import { useEffect, useState } from 'react'
-import { Title, Card, Toolbar } from '@components'
+import { useRouter } from 'next/router'
+import {
+  Title, Card, Score, MainPopup,
+} from '@components'
 import { game3x2 } from '@data'
-import { getPadTime } from '../../helpers/getPadTime'
+import { getPadTime } from '@helpers/getPadTime'
 
 import styles from './Main.module.scss'
 
 export const Main = () => {
-  const columnCount = Math.ceil(game3x2.length / 2)
+  const router = useRouter()
+  const columnCount = Math.ceil(game3x2.length / 3)
   const rowsCount = Math.ceil(game3x2.length / columnCount)
 
   const [cardHeight, setCardHeight] = useState(0)
-  const [values, setValues] = useState({
-    counter: 0,
-    score: 0,
-  })
-  const { counter, score } = values
-  const [isCounting, setIsCounting] = useState(false)
+  const [counter, setCounter] = useState(0)
+  const [score, setScore] = useState(0)
 
+  const [isCounting, setIsCounting] = useState(false)
   const [timeLeft, setTimeLeft] = useState(2 * 60)
   const minutes = getPadTime(Math.floor(timeLeft / 60))
   const seconds = getPadTime(timeLeft - minutes * 60)
@@ -24,49 +25,98 @@ export const Main = () => {
   const [items, setItems] = useState(game3x2)
   const [prev, setPrev] = useState(-1)
 
-  const check = (current) => {
+  const [isShow, setIsShow] = useState(false)
+  const [modalTitles, setModalTitles] = useState('')
+
+  const handlerCheck = (current) => {
+    items[current].open = true
+    setItems([...items])
+
     if (items[current].value === items[prev].value) {
-      items[current].status = 'correct'
-      items[prev].status = 'correct'
-      setItems([...items])
-      setPrev(-1)
+      setTimeout(() => {
+        items[current] = { ...items[current], open: false, status: 'correct' }
+        items[prev] = { ...items[prev], open: false, status: 'correct' }
+        setItems([...items])
+
+        setScore((prevScore) => prevScore + 1)
+      }, 500)
     } else {
-      items[current].status = 'wrong'
-      items[prev].status = 'wrong'
+      items[current] = { ...items[current], status: 'wrong' }
+      items[prev] = { ...items[prev], status: 'wrong' }
       setItems([...items])
       setTimeout(() => {
-        items[current].status = ''
-        items[prev].status = ''
+        items[current] = { ...items[current], open: false, status: '' }
+        items[prev] = { ...items[prev], open: false, status: '' }
         setItems([...items])
-        setPrev(-1)
-      }, 1000)
+      }, 500)
     }
+    setPrev(-1)
   }
 
-  const handelSelectCard = (index) => {
+  const handlerSelectCard = (index) => {
+    setIsCounting(true)
+    setCounter((prevCounter) => prevCounter + 1)
+
     if (prev === -1) {
       items[index] = {
         ...items[index],
-        status: 'active',
+        open: true,
       }
       setItems([...items])
       setPrev(index)
     } else {
-      check(index)
+      handlerCheck(index)
     }
   }
 
-  useEffect(() => {
-    const card = document.querySelector('[data-value]')
-    setCardHeight(card.offsetWidth)
+  const handlerWin = () => {
+    const statusCard = items.findIndex((item) => item.status === '')
+    if (statusCard === -1) {
+      setIsCounting(false)
+      setModalTitles('It was a wonderful game! Great job!')
+      setIsShow(true)
+    }
+  }
+  const handlerLost = () => {
+    setModalTitles('You Lost')
+    setIsShow(true)
+  }
 
+  const handlerRepeatGame = () => {
+    router.reload()
+  }
+
+  useEffect(() => {
     const interval = setInterval(() => {
       // eslint-disable-next-line no-unused-expressions
       isCounting && setTimeLeft((time) => (time >= 1 ? time - 1 : 0))
     }, 1000)
 
-    return () => clearInterval(interval)
-  }, [columnCount, isCounting])
+    handlerWin()
+
+    return () => {
+      clearInterval(interval)
+      handlerWin()
+    }
+  }, [isCounting, items])
+
+  useEffect(() => {
+    const card = document.querySelector('[data-value]')
+    setCardHeight(card.offsetWidth)
+
+    items.sort(() => Math.random() - 0.5)
+    setItems([...items])
+  }, [columnCount])
+
+  useEffect(() => {
+    if (minutes === '00' && seconds === '00') {
+      handlerLost()
+    }
+  }, [minutes, seconds])
+
+  const handlerCloseModal = () => {
+    setIsShow(false)
+  }
 
   return (
     <main className={styles.root}>
@@ -86,28 +136,33 @@ export const Main = () => {
             {items.map((card, index) => (
               <Card
                 key={card.id}
-                selectCard={handelSelectCard}
+                selectCard={handlerSelectCard}
                 card={card}
                 index={index}
               />
             ))}
           </div>
-          <div className={styles.score}>
-            <Toolbar
-              title="Time"
-              time={{ minutes, seconds }}
-            />
-            <Toolbar
-              title="View"
-              value={counter}
-            />
-            <Toolbar
-              title="Score"
-              value={score}
-            />
-          </div>
+          <Score
+            counter={counter}
+            score={score}
+            time={{ minutes, seconds }}
+          />
         </div>
       </div>
+      <MainPopup
+        isShow={isShow}
+        onClose={handlerCloseModal}
+        title={modalTitles}
+      >
+        <button
+          type="button"
+          className={styles.reload}
+          onClick={handlerRepeatGame}
+        >
+          REPEAT
+          <i className={`${styles.icon} bx bx-repeat bx-sm`} />
+        </button>
+      </MainPopup>
     </main>
   )
 }

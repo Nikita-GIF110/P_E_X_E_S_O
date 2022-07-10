@@ -1,0 +1,42 @@
+@import '@scss/theme';
+
+.modal {
+    @include d-flex;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    visibility: hidden;
+    transition: visibility 0.3s linear;
+
+    &.show {
+        visibility: visible;
+    }
+}
+
+.content {
+    position: relative;
+    background-color: $dark-white;
+    width: 100%;
+    max-width: 500px;
+    padding: 16px;
+    border-radius: 10px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: transform 0.2s ease-in-out, opacity 0.2s linear;
+    text-align: center;
+}
+
+.modal.show .content {
+    opacity: 1;
+    transform: none;
+    transition: transform 0.3s ease-in-out, opacity 0.3s linear;
+}
+
+.header {
+    margin-bottom: 20px;
+    font-size: 24px;
+}

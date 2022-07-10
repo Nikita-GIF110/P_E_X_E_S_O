@@ -5,7 +5,7 @@
       "@components": ["/components/index"],
       "@scss/*": ["/scss/*"],
       "@data": ["/data/index"],
-      "@helpers": ["/data/"],
+      "@helpers/*": ["/helpers/*"],
     }
   }
 }
