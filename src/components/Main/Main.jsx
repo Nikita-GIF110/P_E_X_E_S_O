@@ -73,7 +73,7 @@ export const Main = () => {
     const statusCard = items.findIndex((item) => item.status === '')
     if (statusCard === -1) {
       setIsCounting(false)
-      setModalTitles('It was a wonderful game! Great job!')
+      setModalTitles('It was a wonderful game! Great job')
       setIsShow(true)
     }
   }
