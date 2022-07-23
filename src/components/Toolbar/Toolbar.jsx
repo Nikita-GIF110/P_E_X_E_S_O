@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types'
 import styles from './Toolbar.module.scss'
 
-export const Toolbar = ({ title, value, time }) => {
+export const Toolbar = ({
+  title, value, time, icon,
+}) => {
   let viewValue
   if (time) {
     viewValue = (
@@ -23,8 +25,8 @@ export const Toolbar = ({ title, value, time }) => {
 
   return (
     <div className={styles.toolbar}>
-      {title}
-      :
+      {icon && <i className={`${icon} ${styles.icon}`} />}
+      <span className={styles.label}>{title}</span>
       {' '}
       {viewValue}
     </div>
@@ -37,9 +39,11 @@ Toolbar.propTypes = {
     PropTypes.number,
   ]),
   time: PropTypes.object,
+  icon: PropTypes.string,
 }
 Toolbar.defaultProps = {
   title: null,
   value: null,
   time: null,
+  icon: null,
 }

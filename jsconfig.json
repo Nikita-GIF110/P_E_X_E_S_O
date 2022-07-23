@@ -6,6 +6,7 @@
       "@scss/*": ["/scss/*"],
       "@data": ["/data/index"],
       "@helpers/*": ["/helpers/*"],
+      "@api": ["/api/index"],
     }
   }
 }

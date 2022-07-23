@@ -5,6 +5,9 @@ const nextConfig = {
   sassOptions: {
     includePaths: [path.join(__dirname, 'src/scss')],
   },
+  images: {
+    domains: ['rickandmortyapi.com'],
+  },
 }
 
 module.exports = nextConfig

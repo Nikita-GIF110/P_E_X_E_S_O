@@ -2,6 +2,53 @@
 
 .score {
     display: grid;
-    grid-template-rows: repeat(3, 1fr);
-    row-gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+
+    @include breakpoint(lg) {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, 1fr);
+    }
+}
+
+.toolbar {
+    @include d-flex($justifyContent: space-between);
+
+    background-color: $dark-white;
+    border-radius: 10px;
+    padding: 10px;
+    
+    @include breakpoint(md) {
+        font-size: 18px;
+    }
+    @include breakpoint(lg) {
+        font-size: 24px;
+        &:not(:last-child) {
+            margin-bottom: 10px;
+        }
+    }
+}
+
+.value {
+    display: inline-block;
+    background-color: $secondary;
+    color: $dark-white;
+    padding: 4px;
+    border-radius: 4px;
+
+}
+
+.label {
+    display: none;
+
+    @include breakpoint(md) {
+        display: inline-block;
+    }
+}
+
+.icon {
+    
+    @include breakpoint(md) {
+        display: none;
+    }
 }

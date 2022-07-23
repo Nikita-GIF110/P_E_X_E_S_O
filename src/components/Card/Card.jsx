@@ -1,19 +1,16 @@
 import PropTypes from 'prop-types'
+import Image from 'next/image'
+
 import styles from './Card.module.scss'
 
 export const Card = ({ card, index, selectCard }) => {
-  const {
-    label, value, status, open,
-  } = card
+  const { status, open } = card
 
   const handlerChange = () => {
     selectCard(index)
   }
 
   const getClasses = (cardStatus) => {
-    if (cardStatus === 'wrong') {
-      return styles.wrong
-    }
     if (cardStatus === 'correct') {
       return styles.correct
     }
@@ -23,7 +20,6 @@ export const Card = ({ card, index, selectCard }) => {
   return (
     <div
       className={`${styles.card} ${open ? styles.active : ''} ${getClasses(status)}`}
-      data-value={value}
       role="button"
       tabIndex={0}
       onClick={handlerChange}
@@ -37,7 +33,14 @@ export const Card = ({ card, index, selectCard }) => {
         tabIndex={0}
         onClick={(event) => event.stopPropagation()}
       >
-        {label}
+        <Image
+          src={card.image}
+          alt={card.name}
+          layout="fill"
+          objectPosition="center"
+          objectFit="fill"
+          priority
+        />
       </span>
     </div>
   )

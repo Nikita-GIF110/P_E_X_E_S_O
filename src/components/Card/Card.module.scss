@@ -76,11 +76,6 @@ $secondary-bg-default: rgba(3, 26, 85, 0.9);
         transition: $card-transition;
     }
 }
-.card.wrong {
-    .side {
-        background-color: $button-color;
-    }
-}
 
 @keyframes card-correct-animation {
     from { opacity: 1; }

@@ -6,10 +6,15 @@
     background-color: $dark-white;
     border-radius: 10px;
     padding: 10px;
-    font-size: 24px;
-
-    &:not(:last-child) {
-        margin-bottom: 10px;
+    
+    @include breakpoint(md) {
+        font-size: 18px;
+    }
+    @include breakpoint(lg) {
+        font-size: 24px;
+        &:not(:last-child) {
+            margin-bottom: 10px;
+        }
     }
 }
 
@@ -20,4 +25,19 @@
     padding: 4px;
     border-radius: 4px;
 
+}
+
+.label {
+    display: none;
+
+    @include breakpoint(md) {
+        display: inline-block;
+    }
+}
+
+.icon {
+    
+    @include breakpoint(md) {
+        display: none;
+    }
 }
