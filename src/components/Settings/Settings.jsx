@@ -1,69 +1,39 @@
-import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import styles from './Settings.module.scss'
+import { Form } from 'react-final-form'
+import { Button } from 'reactstrap'
+import { RangeField } from '@components'
 
-const FormItem = ({
-  label, type, value, onChange,
-}) => (
-  // eslint-disable-next-line jsx-a11y/label-has-associated-control
-  <label className={styles.label}>
-    {label}
-    <input
-      type={type}
-      value={value}
-      className={styles.range}
-      onChange={onChange}
-      min={1}
-      max={3}
-    />
-    <span className={styles.level}>Low</span>
-  </label>
+export const Settings = ({ onClose, onSubmit }) => (
+  <Form
+    onSubmit={onSubmit}
+  >
+    {({ handleSubmit }) => (
+      <form onSubmit={handleSubmit}>
+        <div>
+          <div>Choose a time</div>
+          <RangeField name="time" max={3} />
+        </div>
+        <div>
+          <div>Choose a quantity cards</div>
+          <RangeField name="cards" max={4} />
+        </div>
+        <Button type="submit">Apply</Button>
+        <Button
+          onClick={onClose}
+          className="ms-2"
+        >
+          Close
+        </Button>
+      </form>
+    )}
+  </Form>
 )
-FormItem.propTypes = {
-  onChange: PropTypes.func,
-  label: PropTypes.string,
-  type: PropTypes.string,
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-}
-FormItem.defaultProps = {
-  onChange: () => {},
-  label: null,
-  type: 'range',
-  value: '',
-}
-
-export const Settings = ({ onSubmit }) => {
-  const [timeValue, setTimeValue] = useState(1)
-
-  const handlerChange = (event) => {
-    const { value } = event.target
-    setTimeValue(value)
-  }
-
-  return (
-    <form
-      onSubmit={onSubmit}
-      className={styles.form}
-    >
-      <FormItem
-        label="Choose the difficulty level"
-        onChange={handlerChange}
-        value={timeValue}
-      />
-
-      <button type="submit">
-        Ready
-      </button>
-    </form>
-  )
-}
 
 Settings.propTypes = {
+  onClose: PropTypes.func,
   onSubmit: PropTypes.func,
 }
 Settings.defaultProps = {
-  onSubmit: () => {},
+  onClose: () => { },
+  onSubmit: () => { },
 }

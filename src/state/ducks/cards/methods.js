@@ -9,17 +9,32 @@ import {
   setScoreGame,
 } from './store'
 
-export const fetchCharactersList = () => async (dispatch) => {
-  const temp = []
+const getRandomNumbersInRange = (min, max, count) => {
+  const result = []
+  while (result.length < count) {
+    const randomNumber = Math.floor(Math.random() * (max - min)) + min
+    if (result.indexOf(randomNumber) === -1) {
+      result.push(randomNumber)
+    }
+  }
+
+  return result
+}
+
+export const fetchCharactersList = (cardQuantity = 6) => async (dispatch) => {
   const { results } = await API.characters.index()
-  results.forEach((character, index) => {
+  const indexs = getRandomNumbersInRange(0, results.length, cardQuantity)
+  const temp = []
+
+  indexs.forEach((index) => {
     temp.push({
-      ...character, id: index, open: false, status: '',
+      ...results[index], id: index, open: false, status: '',
     })
     temp.push({
-      ...character, id: index + 1, open: false, status: '',
+      ...results[index], id: index + 1, open: false, status: '',
     })
   })
+  temp.sort(() => Math.random() - 0.5)
   dispatch(setItems(temp))
 }
 

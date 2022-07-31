@@ -16,15 +16,23 @@ const { actions, reducer } = createSlice({
 
   reducers: {
     setItems: (state, action) => {
-      state.items = action.payload.slice(0, 12).sort(() => Math.random() - 0.5)
+      state.items = action.payload
     },
     setUpdateItem: (state, action) => {
       const { index, status } = action.payload
       // eslint-disable-next-line no-return-assign
-      index.map((num) => state.items[num] = {
-        ...state.items[num],
-        open: handlerOpenCards(status),
-        status,
+      // index.map((num) => state.items[num] = {
+      //   ...state.items[num],
+      //   open: handlerOpenCards(status),
+      //   status,
+      // })
+      index.map((num) => {
+        state.items[num] = {
+          ...state.items[num],
+          open: handlerOpenCards(status),
+          status,
+        }
+        return state.items[num]
       })
     },
     setPrev: (state, action) => {

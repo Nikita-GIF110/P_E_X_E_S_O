@@ -1,8 +1,18 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  Title, Card, Score, MainPopup,
-} from '@components'
+  Col,
+  Container,
+  Row,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Offcanvas,
+  OffcanvasHeader,
+  OffcanvasBody,
+  Button,
+} from 'reactstrap'
+import { Card, Score, Settings } from '@components'
 import { getPadTime } from '@helpers/getPadTime'
 import { game } from '../../state'
 
@@ -21,14 +31,15 @@ export const Main = () => {
     gameStart,
   } = useSelector(game.selectors.gameSelector)
 
-  const columnCount = Math.ceil(items.length / 3)
-  const rowsCount = Math.ceil(items.length / columnCount)
-  const [cardHeight, setCardHeight] = useState(0)
-
   const [timeLeft, setTimeLeft] = useState(2 * 60)
   const minutes = getPadTime(Math.floor(timeLeft / 60))
   const seconds = getPadTime(timeLeft - minutes * 60)
   const [modalTitles, setModalTitles] = useState('')
+  const [settingOpen, setSettingOpen] = useState(false)
+
+  const hendlerSettingclick = () => {
+    setSettingOpen(!settingOpen)
+  }
 
   const handlerCheck = (current) => {
     dispatch(game.methods.updateItem([current]))
@@ -83,12 +94,6 @@ export const Main = () => {
   }, [isCounting])
 
   useEffect(() => {
-    const area = document.getElementById('area')
-    const height = Math.ceil(area.offsetWidth / (columnCount) - (10 * (columnCount - 1)))
-    setCardHeight(height)
-  }, [columnCount])
-
-  useEffect(() => {
     const correctItems = items.filter((item) => item.status === 'correct')
     const conditionItems = correctItems.length === items.length
 
@@ -101,54 +106,70 @@ export const Main = () => {
   }, [minutes, seconds])
 
   useEffect(() => {
-    dispatch(game.methods.fetchCharactersList())
+    dispatch(game.methods.fetchCharactersList(6))
   }, [])
 
   return (
     <main className={styles.root}>
-      <div className={styles.container}>
-        <Title>
+      <Container>
+        <Button onClick={hendlerSettingclick}>
+          <i className="bx bx-hive" />
+        </Button>
+        <h1 className="fw-bold text-white text-center mb-2">
           MEMORY GAME
-        </Title>
-        <div className={styles.body}>
-          <div
-            id="area"
-            className={styles.area}
-            style={{
-              gridTemplateColumns: `repeat(${columnCount}, 1fr)`,
-              gridTemplateRows: `repeat(${rowsCount}, ${cardHeight}px)`,
-            }}
+        </h1>
+        <Row>
+          <Col className="col-12 mb-3 col-lg-9 mx-lg-auto col-xxl-4 order-xxl-2">
+            <Score
+              view={view}
+              score={score}
+              time={{ minutes, seconds }}
+            />
+          </Col>
+          <Col className="col-12 col-lg-9 mx-lg-auto col-xxl-8 order-xxl-1">
+            <div
+              id="area"
+              className={`${styles.area} p-1 p-sm-2`}
+            >
+              {items.map((card, index) => (
+                <Card
+                  key={`${card.name}-${card.id}`}
+                  selectCard={handlerSelectCard}
+                  card={card}
+                  index={index}
+                />
+              ))}
+            </div>
+          </Col>
+        </Row>
+      </Container>
+      <Modal isOpen={isShow} centered>
+        <ModalHeader>{modalTitles}</ModalHeader>
+        <ModalBody>
+          <button
+            type="button"
+            className={styles.reload}
+            onClick={handlerRepeatGame}
           >
-            {items.map((card, index) => (
-              <Card
-                key={`${card.name}-${card.id}`}
-                selectCard={handlerSelectCard}
-                card={card}
-                index={index}
-              />
-            ))}
-          </div>
-          <Score
-            view={view}
-            score={score}
-            time={{ minutes, seconds }}
-            className={styles.score}
-          />
-        </div>
-      </div>
-      <MainPopup
-        isShow={isShow}
-        title={modalTitles}
+            REPEAT
+            <i className={`${styles.icon} bx bx-repeat bx-sm`} />
+          </button>
+        </ModalBody>
+      </Modal>
+      <Offcanvas
+        isOpen={settingOpen}
+        direction="end"
+        toggle={hendlerSettingclick}
       >
-        <button
-          type="button"
-          className={styles.reload}
-          onClick={handlerRepeatGame}
-        >
-          REPEAT
-          <i className={`${styles.icon} bx bx-repeat bx-sm`} />
-        </button>
-      </MainPopup>
+        <OffcanvasHeader className="border-bottom">
+          <strong>Settings</strong>
+        </OffcanvasHeader>
+        <OffcanvasBody>
+          <Settings
+            onClose={hendlerSettingclick}
+          />
+        </OffcanvasBody>
+      </Offcanvas>
     </main>
   )
 }

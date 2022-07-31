@@ -10,6 +10,14 @@ $secondary-bg-default: rgba(3, 26, 85, 0.9);
     cursor: pointer;
     overflow: hidden;
     transition: $card-transition;
+    height: 80px;
+
+    @include breakpoint(sm) {
+        height: 130px;
+    }
+    @include breakpoint(lg) {
+        height: 160px;
+    }
 }
 
 .side {

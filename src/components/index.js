@@ -1,7 +1,7 @@
 export { Main } from './Main'
-export { Title } from './Title'
 export { Card } from './Card'
 export { Toolbar } from './Toolbar'
 export { Settings } from './Settings'
 export { Score } from './Score'
-export { MainPopup } from './MainPopup'
+
+export { RangeField } from './Form'

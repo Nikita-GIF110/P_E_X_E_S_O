@@ -6,14 +6,6 @@
     padding: 30px 10px
 }
 
-.container {
-    width: 100%;
-    max-width: 1000px;
-
-    margin-right: auto;
-    margin-left: auto;
-}
-
 .body {
     display: grid;
     grid-template-columns: 1fr;
@@ -26,22 +18,16 @@
 
 .area {
     display: grid;
+    height: 100%;
     gap: 10px;
     background-color: $dark-white;
     border-radius: 10px;
-    padding: 16px;
-    order: 2;
 
-    @include breakpoint(lg) {
-        order: 1;
+    @include breakpoint(xs) {
+        grid-template-columns: repeat(3, 1fr);
     }
-}
-
-.score {
-    order: 1;
-
-    @include breakpoint(lg) {
-        order: 2;
+    @include breakpoint(md) {
+        grid-template-columns: repeat(4, 1fr);
     }
 }
 
