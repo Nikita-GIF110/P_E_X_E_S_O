@@ -7,6 +7,7 @@ import {
   setOpen,
   setRepeatGame,
   setScoreGame,
+  setSetting,
 } from './store'
 
 const getRandomNumbersInRange = (min, max, count) => {
@@ -56,4 +57,8 @@ export const repeatGame = () => async (dispatch) => {
 }
 export const setAnAccount = (values) => (dispatch) => {
   dispatch(setScoreGame(values))
+}
+
+export const setting = (values) => (dispatch) => {
+  dispatch(setSetting(values))
 }

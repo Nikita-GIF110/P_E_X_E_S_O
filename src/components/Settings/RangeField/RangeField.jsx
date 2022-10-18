@@ -1,45 +1,59 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Field as FormField } from 'react-final-form'
 import {
-  FormGroup, Input, Label, Badge,
+  FormGroup,
+  Input,
+  Label,
 } from 'reactstrap'
+
 import styles from './RangeField.module.scss'
 
 export const RangeField = ({
-  label, name, max, min, step,
+  label,
+  name,
+  max,
+  min,
+  step,
+  value,
+  badgeValue,
 }) => {
+  const [inputValue, setInputValue] = useState(value)
   const [badgePosition, setBadgePosition] = useState(0)
 
   const handlerChange = (event, input) => {
     input.onChange(event.target.value)
-    setBadgePosition(Math.ceil((event.target.value * 100) / max))
+    setInputValue(event.target.value)
   }
+
+  useEffect(() => {
+    const percentage = Math.ceil((inputValue * 100) / max)
+    setBadgePosition(percentage)
+  }, [inputValue])
+
   return (
-    <FormGroup className="position-relative pt-4">
-      <Label className="d-block">
+    <FormGroup>
+      <Label className="d-block m-0">
         <FormField name={name}>
           {({ input }) => (
-            <>
-              <Badge
-                color="primary"
-                pill
+            <div className={styles.wrapper}>
+              <div
                 className={styles.badge}
-                style={{
-                  left: `${badgePosition - 2}%`,
-                }}
+                style={{ left: `${badgePosition}%` }}
               >
-                {input.value}
-              </Badge>
-              <Input
+                {inputValue}
+              </div>
+              <input
                 {...input}
                 type="range"
+                value={inputValue}
                 min={min}
                 max={max}
                 step={step}
+                className={styles.input}
                 onChange={(event) => handlerChange(event, input)}
               />
-            </>
+            </div>
           )}
         </FormField>
         {label}
@@ -53,6 +67,14 @@ RangeField.propTypes = {
   min: PropTypes.number,
   max: PropTypes.number,
   step: PropTypes.number,
+  value: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  badgeValue: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
 }
 RangeField.defaultProps = {
   label: null,
@@ -60,4 +82,6 @@ RangeField.defaultProps = {
   min: 0,
   max: 100,
   step: 1,
+  value: 0,
+  badgeValue: null,
 }

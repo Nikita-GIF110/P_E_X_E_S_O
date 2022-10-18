@@ -1,0 +1,95 @@
+@import "@scss/theme";
+
+$height-container: 5px;
+$thumbSize: 20px; 
+
+.container {
+    position: relative;
+    height: $height-container;
+}
+
+.badge {
+    position: absolute;
+    top: -50px;
+    font-size: 14px;
+
+    &::before {
+        content: "";
+        @include d-flex;
+
+        border: 1px solid $primary;
+        // transform: rotate(45deg);
+        width: 35px;
+        height: 35px;
+        box-sizing: border-box;
+        // border-top-left-radius: 50%;
+        // border-top-right-radius: 50%;
+        // border-bottom-left-radius: 50%;
+    }
+}
+
+.inner {
+    @include d-flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.track {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: $secondary;
+    border-radius: 4px;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: transparent;
+
+    &::-webkit-slider-runnable-track {
+        background: transparent;
+    }
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: $thumbSize;
+        height: $thumbSize;
+    }
+
+    &:active {
+        cursor: grabbing;
+    }
+}
+
+.progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: $primary;
+    pointer-events: none;
+}
+
+.thumb {
+    position: absolute;
+    top: 0;
+    transform: translateY(calc(-50% + ($height-container / 2)));
+    background-color: $dark-white;
+    border-radius: 50%;
+    border: 3px solid $primary;
+    width: $thumbSize;
+    height: $thumbSize;
+}

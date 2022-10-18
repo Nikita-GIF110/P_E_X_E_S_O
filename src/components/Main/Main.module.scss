@@ -18,17 +18,18 @@
 
 .area {
     display: grid;
+
     height: 100%;
     gap: 10px;
     background-color: $dark-white;
     border-radius: 10px;
 
-    @include breakpoint(xs) {
-        grid-template-columns: repeat(3, 1fr);
-    }
-    @include breakpoint(md) {
-        grid-template-columns: repeat(4, 1fr);
-    }
+    // @include breakpoint(xs) {
+    //     grid-template-columns: repeat(3, 1fr);
+    // }
+    // @include breakpoint(md) {
+    //     grid-template-columns: repeat(4, 1fr);
+    // }
 }
 
 .reload {

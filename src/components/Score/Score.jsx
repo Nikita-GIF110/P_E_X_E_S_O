@@ -55,7 +55,7 @@ export const Score = ({
   const { minutes, seconds } = time
   return (
     <Row className="g-2">
-      <Col xs={4} xxl={12}>
+      <Col xs={4}>
         <Toolbar
           title="Time:"
           time={{ minutes, seconds }}
@@ -63,14 +63,14 @@ export const Score = ({
         />
       </Col>
 
-      <Col xs={4} xxl={12}>
+      <Col xs={4}>
         <Toolbar
           title="View:"
           value={view}
           icon="bx bx-bell"
         />
       </Col>
-      <Col xs={4} xxl={12}>
+      <Col xs={4}>
         <Toolbar
           title="Score:"
           value={score}

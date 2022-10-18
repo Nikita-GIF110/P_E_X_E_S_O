@@ -29,9 +29,20 @@ export const Main = () => {
     view,
     score,
     gameStart,
+    setting,
   } = useSelector(game.selectors.gameSelector)
 
-  const [timeLeft, setTimeLeft] = useState(2 * 60)
+  const quantityColumns = (value) => {
+    if (value <= 6) {
+      return 3
+    }
+    if (value > 6) {
+      return 4
+    }
+    return 3
+  }
+
+  const [timeLeft, setTimeLeft] = useState(setting.time)
   const minutes = getPadTime(Math.floor(timeLeft / 60))
   const seconds = getPadTime(timeLeft - minutes * 60)
   const [modalTitles, setModalTitles] = useState('')
@@ -106,8 +117,9 @@ export const Main = () => {
   }, [minutes, seconds])
 
   useEffect(() => {
-    dispatch(game.methods.fetchCharactersList(6))
-  }, [])
+    dispatch(game.methods.fetchCharactersList(setting.quantity))
+    setTimeLeft(setting.time)
+  }, [setting])
 
   return (
     <main className={styles.root}>
@@ -119,23 +131,24 @@ export const Main = () => {
           MEMORY GAME
         </h1>
         <Row>
-          <Col className="col-12 mb-3 col-lg-9 mx-lg-auto col-xxl-4 order-xxl-2">
+          <Col className="col-12 mb-3 col-lg-7 mx-lg-auto">
             <Score
               view={view}
               score={score}
               time={{ minutes, seconds }}
             />
           </Col>
-          <Col className="col-12 col-lg-9 mx-lg-auto col-xxl-8 order-xxl-1">
+          <Col className="col-12 col-lg-7 mx-lg-auto">
             <div
               id="area"
               className={`${styles.area} p-1 p-sm-2`}
+              style={{ gridTemplateColumns: `repeat(${quantityColumns(items.length)}, 1fr)` }}
             >
               {items.map((card, index) => (
                 <Card
                   key={`${card.name}-${card.id}`}
                   selectCard={handlerSelectCard}
-                  card={card}
+                  {...card}
                   index={index}
                 />
               ))}

@@ -8,6 +8,10 @@ const initialState = {
   view: 0,
   score: 0,
   gameStart: false,
+  setting: {
+    quantity: 6,
+    time: 120,
+  },
 }
 
 const { actions, reducer } = createSlice({
@@ -20,12 +24,6 @@ const { actions, reducer } = createSlice({
     },
     setUpdateItem: (state, action) => {
       const { index, status } = action.payload
-      // eslint-disable-next-line no-return-assign
-      // index.map((num) => state.items[num] = {
-      //   ...state.items[num],
-      //   open: handlerOpenCards(status),
-      //   status,
-      // })
       index.map((num) => {
         state.items[num] = {
           ...state.items[num],
@@ -57,6 +55,13 @@ const { actions, reducer } = createSlice({
       state.score = score
       state.view = view
     },
+    setSetting: (state, action) => {
+      const { quantity, time } = action.payload
+      state.setting = {
+        time: parseInt(time, 10),
+        quantity,
+      }
+    },
   },
 })
 
@@ -80,4 +85,5 @@ export const {
   setOpen,
   setRepeatGame,
   setScoreGame,
+  setSetting,
 } = actions

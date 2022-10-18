@@ -1,11 +1,15 @@
 import PropTypes from 'prop-types'
 import Image from 'next/image'
-
 import styles from './Card.module.scss'
 
-export const Card = ({ card, index, selectCard }) => {
-  const { status, open } = card
-
+export const Card = ({
+  status,
+  open,
+  image,
+  name,
+  index,
+  selectCard,
+}) => {
   const handlerChange = () => {
     selectCard(index)
   }
@@ -34,11 +38,10 @@ export const Card = ({ card, index, selectCard }) => {
         onClick={(event) => event.stopPropagation()}
       >
         <Image
-          src={card.image}
-          alt={card.name}
+          src={image}
+          alt={name}
           layout="fill"
           objectPosition="center"
-          objectFit="fill"
           priority
         />
       </span>
@@ -46,12 +49,18 @@ export const Card = ({ card, index, selectCard }) => {
   )
 }
 Card.propTypes = {
-  card: PropTypes.object,
+  status: PropTypes.string,
+  open: PropTypes.bool,
+  image: PropTypes.string,
+  name: PropTypes.string,
   selectCard: PropTypes.func,
   index: PropTypes.number,
 }
 Card.defaultProps = {
-  card: {},
+  status: null,
+  open: false,
+  image: '',
+  name: null,
   selectCard: () => { },
   index: null,
 }
